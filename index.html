@@ -78,7 +78,9 @@
 <body>
     <div class="container">
         <h1>Be My Valentine? 👉👈</h1>
-        <div style="font-size: 4em; margin: 20px 0;">🌹</div>
+        <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=200&h=200&fit=crop" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;">
+        <img src="https://c.tenor.com/HHZOPnpoWPMAAAAC/tenor.gif" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
+        <img src="https://c.tenor.com/Ch_6P9HWkf8AAAAC/tenor.gif" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
         <p>I promise I'm not just saying this because I want free food... okay maybe a little 🍽️</p>
 
         <div class="buttons">
@@ -91,20 +93,46 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
+        var countNoHover = 0;
+        var yesScale = 1;
         function handleYes() {
             document.querySelector('.buttons').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
-            confetti();
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
         }
 
         function handleNo() {
+            console.info('handleNo');
+            countNoHover++;
             const noBtn = document.getElementById('noBtn');
-            const randomX = Math.random() * 300 - 150;
-            const randomY = Math.random() * 300 - 150;
+            const randomX = Math.random() * 500 - 300;
+            const randomY = Math.random() * 600 - 300;
 
             noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+
+            const yesBtn = document.getElementById('yesBtn');
+            yesScale += 0.05 * countNoHover;
+            yesBtn.style.transform = `scale(${yesScale})`;
+
+            console.log(countNoHover);
+
+            // Show second image after 3 hovers
+            if (countNoHover === 3) {
+                document.getElementById('img1').style.display = 'none';
+                document.getElementById('img2').classList.add('show');
+            }
+
+            // Show third image after 10 hovers
+            if (countNoHover === 10) {
+                document.getElementById('img2').classList.remove('show');
+                document.getElementById('img3').classList.add('show');
+            }
         }
     </script>
 </body>
