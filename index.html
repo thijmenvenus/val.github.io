@@ -38,7 +38,7 @@
 
         .buttons {
             display: flex;
-            gap: 15px;
+            gap: 50px;
             justify-content: center;
         }
 
@@ -100,11 +100,11 @@
         <img id="img2" src="https://c.tenor.com/HHZOPnpoWPMAAAAC/tenor.gif" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
         <img id="img3" src="https://c.tenor.com/Ch_6P9HWkf8AAAAC/tenor.gif" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
         <img id="img4" src="https://i.giphy.com/fFa05KbZowXiEIyRse.webp" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
-        <p>I promise I'm not just saying this because I want free food... okay maybe a little 🍽️</p>
+        <p>Hi August, will you be my valentine once more?</p>
 
         <div class="buttons">
             <button class="yes-btn" id="yesBtn" onclick="handleYes()">Yes! 💕</button>
-            <button class="no-btn" id="noBtn" onmouseover="handleNo()">No</button>
+            <button class="no-btn" id="noBtn">No</button>
         </div>
 
         <div class="success-message" id="successMessage">
@@ -114,7 +114,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        // Image configuration - add more images here
         const images = [
             { id: 'img0', displayAt: -1 },
             { id: 'img1', displayAt: 0 },
@@ -126,16 +125,39 @@
         var countNoHover = 0;
         var yesScale = 1;
 
+        // Detect if device is mobile
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // Initialize button event based on device type
+        window.addEventListener('load', function() {
+            const noBtn = document.getElementById('noBtn');
+            if (isMobile()) {
+                noBtn.addEventListener('click', handleNo);
+            } else {
+                noBtn.addEventListener('mouseover', handleNo);
+            }
+        });
+
         function handleYes() {
             countNoHover = -1;
             updateCurrentImage()
             document.querySelector('.buttons').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
+            
             confetti({
+                particleCount: 1000,
+                spread: 100,
+                origin: { y: 0.6 }
+              });
+            setInterval(function() {
+              confetti({
                 particleCount: 100,
                 spread: 70,
                 origin: { y: 0.6 }
-            });
+              });
+            }, 2000);
         }
 
         function handleNo() {
@@ -150,12 +172,10 @@
             yesScale += 0.009 * countNoHover;
             yesBtn.style.transform = `scale(${yesScale})`;
 
-            // Update current image based on hover count
             updateCurrentImage();
         }
 
         function updateCurrentImage() {
-            // Find the current image to display
             let currentImage = images[0];
             for (let img of images) {
                 if (countNoHover >= img.displayAt) {
@@ -163,7 +183,6 @@
                 }
             }
 
-            // Hide all images and show only the current one
             for (let img of images) {
                 const element = document.getElementById(img.id);
                 if (img.id === currentImage.id) {
