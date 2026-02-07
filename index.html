@@ -70,6 +70,12 @@
 
         .rose-image {
             display: none;
+            margin-left: auto;
+            margin-right: auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            margin: 20px auto;
         }
 
         .rose-image.show {
@@ -83,10 +89,6 @@
         }
 
         
-        .rose-image {
-            display: none;
-        }
-
         .rose-image.active {
             display: block;
         }
@@ -95,11 +97,11 @@
 <body>
     <div class="container">
         <h1>Be My Valentine? 👉👈</h1>
-        <img id="img0" src="https://i.giphy.com/MDJ9IbxxvDUQM.webp" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
-         <img id="img1" src="https://media.tenor.com/3rT8YYEwDdAAAAAi/cute-kawaii.gif" class="rose-image active" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;">
-        <img id="img2" src="https://c.tenor.com/HHZOPnpoWPMAAAAC/tenor.gif" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
-        <img id="img3" src="https://c.tenor.com/Ch_6P9HWkf8AAAAC/tenor.gif" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
-        <img id="img4" src="https://i.giphy.com/fFa05KbZowXiEIyRse.webp" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
+        <img id="img0" src="https://i.giphy.com/MDJ9IbxxvDUQM.webp" class="rose-image"/>
+         <img id="img1" src="https://media.tenor.com/3rT8YYEwDdAAAAAi/cute-kawaii.gif" class="rose-image active">
+        <img id="img2" src="https://c.tenor.com/HHZOPnpoWPMAAAAC/tenor.gif" class="rose-image"/>
+        <img id="img3" src="https://c.tenor.com/Ch_6P9HWkf8AAAAC/tenor.gif" class="rose-image"/>
+        <img id="img4" src="https://i.giphy.com/fFa05KbZowXiEIyRse.webp" class="rose-image"/>
         <p>Hi August, will you be my valentine once more?</p>
 
         <div class="buttons">
@@ -125,6 +127,7 @@
         var countNoHover = 0;
         var yesScale = 1;
 
+        
         // Detect if device is mobile
         function isMobile() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -144,6 +147,7 @@
             countNoHover = -1;
             updateCurrentImage()
             document.querySelector('.buttons').style.display = 'none';
+            document.getElementById('question').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             
             confetti({
@@ -169,7 +173,7 @@
             noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
 
             const yesBtn = document.getElementById('yesBtn');
-            yesScale += 0.009 * countNoHover;
+            yesScale += 0.05 * countNoHover;
             yesBtn.style.transform = `scale(${yesScale})`;
 
             updateCurrentImage();
