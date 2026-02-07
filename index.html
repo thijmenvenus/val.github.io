@@ -68,19 +68,38 @@
             position: relative;
         }
 
+        .rose-image {
+            display: none;
+        }
+
+        .rose-image.show {
+            display: block;
+        }
+
         .success-message {
             display: none;
             margin-top: 20px;
             font-size: 2em;
+        }
+
+        
+        .rose-image {
+            display: none;
+        }
+
+        .rose-image.active {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Be My Valentine? 👉👈</h1>
-        <img id="img1" src="https://media.tenor.com/3rT8YYEwDdAAAAAi/cute-kawaii.gif" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;">
+        <img id="img0" src="https://i.giphy.com/MDJ9IbxxvDUQM.webp" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
+         <img id="img1" src="https://media.tenor.com/3rT8YYEwDdAAAAAi/cute-kawaii.gif" class="rose-image active" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;">
         <img id="img2" src="https://c.tenor.com/HHZOPnpoWPMAAAAC/tenor.gif" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
         <img id="img3" src="https://c.tenor.com/Ch_6P9HWkf8AAAAC/tenor.gif" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
+        <img id="img4" src="https://i.giphy.com/fFa05KbZowXiEIyRse.webp" class="rose-image" style="width: 150px; height: 150px; border-radius: 10px; margin: 20px 0;"/>
         <p>I promise I'm not just saying this because I want free food... okay maybe a little 🍽️</p>
 
         <div class="buttons">
@@ -95,9 +114,21 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
+        // Image configuration - add more images here
+        const images = [
+            { id: 'img0', displayAt: -1 },
+            { id: 'img1', displayAt: 0 },
+            { id: 'img2', displayAt: 1 },
+            { id: 'img3', displayAt: 3 },
+            { id: 'img4', displayAt: 7 }
+        ];
+
         var countNoHover = 0;
         var yesScale = 1;
+
         function handleYes() {
+            countNoHover = -1;
+            updateCurrentImage()
             document.querySelector('.buttons').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             confetti({
@@ -108,7 +139,6 @@
         }
 
         function handleNo() {
-            console.info('handleNo');
             countNoHover++;
             const noBtn = document.getElementById('noBtn');
             const randomX = Math.random() * 500 - 300;
@@ -117,21 +147,30 @@
             noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
 
             const yesBtn = document.getElementById('yesBtn');
-            yesScale += 0.05 * countNoHover;
+            yesScale += 0.009 * countNoHover;
             yesBtn.style.transform = `scale(${yesScale})`;
 
-            console.log(countNoHover);
+            // Update current image based on hover count
+            updateCurrentImage();
+        }
 
-            // Show second image after 3 hovers
-            if (countNoHover === 3) {
-                document.getElementById('img1').style.display = 'none';
-                document.getElementById('img2').classList.add('show');
+        function updateCurrentImage() {
+            // Find the current image to display
+            let currentImage = images[0];
+            for (let img of images) {
+                if (countNoHover >= img.displayAt) {
+                    currentImage = img;
+                }
             }
 
-            // Show third image after 10 hovers
-            if (countNoHover === 10) {
-                document.getElementById('img2').classList.remove('show');
-                document.getElementById('img3').classList.add('show');
+            // Hide all images and show only the current one
+            for (let img of images) {
+                const element = document.getElementById(img.id);
+                if (img.id === currentImage.id) {
+                    element.classList.add('active');
+                } else {
+                    element.classList.remove('active');
+                }
             }
         }
     </script>
